@@ -9,7 +9,7 @@ import Foundation
 
 struct ProductPage: Codable {
     let products: [Product]
-    let currentPAge: Int
+    let currentPage: Int
     let pageSize: Int
     let totalResults: Int
     let pageCount: Int
