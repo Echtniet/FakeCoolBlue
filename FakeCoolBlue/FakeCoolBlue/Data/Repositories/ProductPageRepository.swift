@@ -11,7 +11,7 @@ protocol ProductPageRepositoryProtocol {
     func fetchProductPage(for pageNumber: Int, search criteria: String?) async throws -> ProductPage
 }
 
-class BlankRepository: ProductPageRepositoryProtocol {
+class ProductPageRepository: ProductPageRepositoryProtocol {
     private let apiService: APIServiceProtocol
 
     init(apiService: APIServiceProtocol) {

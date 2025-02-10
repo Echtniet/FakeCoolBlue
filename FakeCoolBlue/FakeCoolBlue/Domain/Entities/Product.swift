@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct Product: Codable {
+struct Product: Codable, Hashable {
     let productId: Int
     let productName: String
-    let reviewInfomation: ReviewInformation
+    let reviewInformation: ReviewInformation
     let usps: [String]
     let availabilityState: Int
     let salesPriceIncVat: Double
@@ -18,4 +18,17 @@ struct Product: Codable {
     let coolbluesChoiceInformationTitle: String?
     let promoIcon: PromoIcon?
     let nextDayDelivery: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case productId
+        case productName
+        case reviewInformation
+        case usps = "USPs"
+        case availabilityState
+        case salesPriceIncVat
+        case productImage
+        case coolbluesChoiceInformationTitle
+        case promoIcon
+        case nextDayDelivery
+    }
 }

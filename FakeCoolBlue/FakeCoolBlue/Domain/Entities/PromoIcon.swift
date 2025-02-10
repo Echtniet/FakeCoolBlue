@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PromoIcon: Codable {
+struct PromoIcon: Codable, Hashable {
     let text: String
     let type: String
 }

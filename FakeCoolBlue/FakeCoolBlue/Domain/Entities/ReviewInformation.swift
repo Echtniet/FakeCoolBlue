@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct ReviewInformation: Codable {
+struct ReviewInformation: Codable, Hashable {
     let reviews: [String]
     let reviewSummary: ReviewSummary
 
-    struct ReviewSummary: Codable {
+    struct ReviewSummary: Codable, Hashable {
         let reviewAverage: Double
         let reviewCount: Int
     }
