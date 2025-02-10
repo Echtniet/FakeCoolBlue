@@ -24,7 +24,7 @@ class MockProductPageRepository: ProductPageRepositoryProtocol {
 
 }
 
-struct FakeCoolBlueTests {
+struct FetchProductPageUseCaseTests {
 
     @Test func testFetchProductPageSuccess() async throws {
         let mockRepo = MockProductPageRepository()
