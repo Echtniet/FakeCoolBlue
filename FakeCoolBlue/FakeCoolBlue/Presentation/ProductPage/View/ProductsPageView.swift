@@ -16,7 +16,13 @@ struct ProductPageView: View {
         let apiService = APIService()
         let repository = ProductPageRepository(apiService: apiService)
         let useCase = FetchProductPageUseCase(repository: repository)
-        viewModel = .init(fetchProductPageUseCase: useCase)
+        let filterAvailableProductsUseCase = FilterAvailableProductsUseCase()
+        let filterNextDayDeliveryUseCase = FilterNextDayDeliveryUseCase()
+        viewModel = .init(
+            fetchProductPageUseCase: useCase,
+            filterAvailableProductsUseCase: filterAvailableProductsUseCase,
+            filterNextAvailableProductsUseCase: filterNextDayDeliveryUseCase
+        )
     }
 
     var body: some View {
@@ -67,10 +73,8 @@ struct ProductPageView: View {
                 }
             }
         }
-        .onChange(of: viewModel.searchCriteria) {
-            Task {
-                await viewModel.onSearchFetch()
-            }
+        .onChange(of: viewModel.searchCriteria) { _, newSearchCriteria in
+            viewModel.searchTextSubject.send(newSearchCriteria)
         }
         .ignoresSafeArea(edges: .bottom)
         .task {

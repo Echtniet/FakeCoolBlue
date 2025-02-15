@@ -11,14 +11,14 @@ import Foundation
 
 class MockFetchProductPageUseCase: FetchProductPageUseCaseProtocol {
 
-    var mockProductPage: ProductPage!
+    var mockProductPage: ProductPageDTO!
     var shouldThrowError = false
 
     func execute(for pageNumber: Int, search criteria: String?) async throws -> FakeCoolBlue.ProductPage {
         if shouldThrowError {
             throw NSError(domain: "FetchPageError", code: 1)
         }
-        return mockProductPage
+        return ProductPage(dto: mockProductPage)
     }
 }
 
@@ -28,7 +28,7 @@ struct ProductPageViewModelTests {
         let mockUseCase = MockFetchProductPageUseCase()
         mockUseCase.mockProductPage = .init(
             products: [
-                Product.initTestData()
+                ProductDTO.initTestData()
             ],
             currentPage: 1,
             pageSize: 24,
@@ -36,7 +36,14 @@ struct ProductPageViewModelTests {
             pageCount: 3
         )
 
-        let viewModel = ProductPageViewModel(fetchProductPageUseCase: mockUseCase)
+        let filterAvailableProductsUseCase = FilterAvailableProductsUseCase()
+        let filterNextDayDeliveryUseCase = FilterNextDayDeliveryUseCase()
+        let viewModel = ProductPageViewModel(
+            fetchProductPageUseCase: mockUseCase,
+            filterAvailableProductsUseCase: filterAvailableProductsUseCase,
+            filterNextAvailableProductsUseCase: filterNextDayDeliveryUseCase
+        )
+
         await viewModel.fetchProducts()
 
         #expect(viewModel.products.count == 1)
@@ -46,8 +53,15 @@ struct ProductPageViewModelTests {
     @Test func testFetchProductPageFailure() async throws {
         let mockUseCase = MockFetchProductPageUseCase()
         mockUseCase.shouldThrowError = true
-        
-        let viewModel = ProductPageViewModel(fetchProductPageUseCase: mockUseCase)
+
+        let filterAvailableProductsUseCase = FilterAvailableProductsUseCase()
+        let filterNextDayDeliveryUseCase = FilterNextDayDeliveryUseCase()
+        let viewModel = ProductPageViewModel(
+            fetchProductPageUseCase: mockUseCase,
+            filterAvailableProductsUseCase: filterAvailableProductsUseCase,
+            filterNextAvailableProductsUseCase: filterNextDayDeliveryUseCase
+        )
+
         await viewModel.fetchProducts()
 
         #expect(viewModel.errorMessage != nil)
@@ -58,6 +72,30 @@ extension Product {
 
     static func initTestData() -> Product {
         Product(
+            productId: 832743,
+            productName: "Test Product",
+            reviewInformation: .init(
+                reviews: [],
+                reviewSummary: .init(
+                    reviewAverage: 7.5,
+                    reviewCount: 65
+                )
+            ),
+            usps: [],
+            availabilityState: 1,
+            salesPriceIncVat: 643.95,
+            productImage: "someurl",
+            coolbluesChoiceInformationTitle: nil,
+            promoIcon: nil,
+            nextDayDelivery: false
+        )
+    }
+}
+
+extension ProductDTO {
+
+    static func initTestData() -> ProductDTO {
+        ProductDTO(
             productId: 832743,
             productName: "Test Product",
             reviewInformation: .init(

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol APIServiceProtocol {
-    func fetchProductPage(for pageNumber: Int, search criteria: String?) async throws -> ProductPage
+    func fetchProductPage(for pageNumber: Int, search criteria: String?) async throws -> ProductPageDTO
 }
 
 class APIService: APIServiceProtocol {}

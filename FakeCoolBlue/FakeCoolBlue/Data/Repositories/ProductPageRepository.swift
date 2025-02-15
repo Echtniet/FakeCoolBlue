@@ -11,6 +11,7 @@ protocol ProductPageRepositoryProtocol {
     func fetchProductPage(for pageNumber: Int, search criteria: String?) async throws -> ProductPage
 }
 
+// TODO: mapp ProductDTO to Product
 class ProductPageRepository: ProductPageRepositoryProtocol {
     private let apiService: APIServiceProtocol
 
@@ -19,7 +20,8 @@ class ProductPageRepository: ProductPageRepositoryProtocol {
     }
 
     func fetchProductPage(for pageNumber: Int, search criteria: String?) async throws -> ProductPage {
-        return try await apiService.fetchProductPage(for: pageNumber, search: criteria)
+        let productPageDTO = try await apiService.fetchProductPage(for: pageNumber, search: criteria)
+        return ProductPage(dto: productPageDTO)
     }
 
 }

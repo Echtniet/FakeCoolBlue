@@ -11,10 +11,10 @@ import Foundation
 
 class MockApiService: APIServiceProtocol {
     
-    var mockProductPage: ProductPage!
+    var mockProductPage: ProductPageDTO!
     var shouldThrowError: Bool = false
 
-    func fetchProductPage(for pageNumber: Int, search criteria: String?) async throws -> ProductPage {
+    func fetchProductPage(for pageNumber: Int, search criteria: String?) async throws -> ProductPageDTO {
         if shouldThrowError {
             throw NSError(domain: "FetchPageError", code: 1)
         }

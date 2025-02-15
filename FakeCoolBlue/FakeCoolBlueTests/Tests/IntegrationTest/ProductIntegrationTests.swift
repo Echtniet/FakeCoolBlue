@@ -16,7 +16,7 @@ struct ProductIntegrationTests {
         let mockAPI = MockApiService()
         mockAPI.mockProductPage = .init(
             products: [
-                Product.initTestData()
+                ProductDTO.initTestData()
             ],
             currentPage: 1,
             pageSize: 24,
@@ -26,7 +26,13 @@ struct ProductIntegrationTests {
 
         let repository = ProductPageRepository(apiService: mockAPI)
         let useCase = FetchProductPageUseCase(repository: repository)
-        let viewModel = ProductPageViewModel(fetchProductPageUseCase: useCase)
+        let filterAvailableProductsUseCase = FilterAvailableProductsUseCase()
+        let filterNextDayDeliveryUseCase = FilterNextDayDeliveryUseCase()
+        let viewModel = ProductPageViewModel(
+            fetchProductPageUseCase: useCase,
+            filterAvailableProductsUseCase: filterAvailableProductsUseCase,
+            filterNextAvailableProductsUseCase: filterNextDayDeliveryUseCase
+        )
 
         await viewModel.fetchProducts()
 

@@ -11,14 +11,14 @@ import Foundation
 
 class MockProductPageRepository: ProductPageRepositoryProtocol {
 
-    var mockProductPage: ProductPage!
+    var mockProductPage: ProductPageDTO!
     var shouldThrowError: Bool = false
 
     func fetchProductPage(for pageNumber: Int, search criteria: String?) async throws -> FakeCoolBlue.ProductPage {
         if shouldThrowError {
             throw NSError(domain: "FetchPageError", code: 1)
         }
-        return mockProductPage
+        return ProductPage(dto: mockProductPage)
     }
 
 
